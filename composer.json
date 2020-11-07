@@ -1,0 +1,35 @@
+{
+  "name": "Magic Framework",
+  "type": "project",
+  "license": "MIT",
+  "description": "magic framework",
+  "version": "1.2",
+  "require": {
+    "php": "^7.4.0",
+    "ext-curl": "*",
+    "ext-gd": "*",
+    "ext-iconv": "*",
+    "ext-json": "*",
+    "ext-openssl": "*",
+    "ext-pdo": "*",
+    "ext-mongodb": "^1.5",
+    "mongodb/mongodb": "^1.4"
+  },
+  "require-dev": {
+  },
+  "config": {
+    "preferred-install": {
+      "*": "dist"
+    },
+    "sort-packages": true,
+    "platform": {
+      "ext-mongo": "1.6.16"
+    },
+    "process-timeout": 2000
+  },
+  "autoload": {
+    "psr-4": {
+      "MagicFramework\\": "src/"
+    }
+  }
+}
