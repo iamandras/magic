@@ -10,8 +10,7 @@ use PDO;
 
 class PDOLayer
 {
-    /** @var PDO */
-    private $connection;
+    private PDO $connection;
 
     public function __construct()
     {
@@ -32,10 +31,7 @@ class PDOLayer
     }
 
     /**
-     * @param BaseEntity $entity
      * @param EntityProperty[] $entityProperties
-     * @param array $record
-     * @return BaseEntity
      */
     private function setEntityFromDatabase(
         BaseEntity $entity,
@@ -74,12 +70,6 @@ class PDOLayer
         return $entity;
     }
 
-    /**
-     * @param string $sql
-     * @param string $entityClass
-     * @param array $parameters
-     * @return BaseEntity[]
-     */
     public function getRecords(string $sql, string $entityClass, array $parameters): array
     {
         $tempEntity = new $entityClass;
