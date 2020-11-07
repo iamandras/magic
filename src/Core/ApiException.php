@@ -12,30 +12,12 @@ class ApiException extends Exception
     const ERROR_VALIDATION_PROBLEMS = 'validationProblems';
     const ERROR_MISSING_TOKEN = 'missingToken';
     const ERROR_MISSING_USER = 'missingUser';
-    const ERROR_MISSING_SCHEMA = 'missingSchema';
-    const ERROR_MISSING_SCREEN = 'missingScreen';
-    const ERROR_MISSING_CONTENT = 'missingContent';
-    const ERROR_MISSING_SUB_SCHEMA = 'missingSubSchema';
-    const ERROR_MISSING_CUSTOMER = 'missingCustomer';
-    const ERROR_MISSING_COMPANY = 'missingCompany';
-    const ERROR_MISSING_USER_ROLE = 'missingUserRole';
-    const ERROR_MISSING_TQL = 'missingTql';
-    const ERROR_SCRIPT_ERROR = 'scriptError';
 
-    const ERROR_FAILED_LOGIN = 'failedLogin';
-    const ERROR_EMAIL_EXISTS = 'emailExists';
     const ERROR_NOT_ENOUGH_RIGHTS = 'notEnoughRights';
 
     const MISSING_ERROR_CODES = [
         self::ERROR_MISSING_TOKEN,
         self::ERROR_MISSING_USER,
-        self::ERROR_MISSING_SCHEMA,
-        self::ERROR_MISSING_CUSTOMER,
-        self::ERROR_MISSING_COMPANY,
-        self::ERROR_MISSING_USER_ROLE,
-        self::ERROR_MISSING_TQL,
-        self::ERROR_MISSING_CONTENT,
-        self::ERROR_MISSING_SCREEN,
     ];
 
     protected array $errorDetails;
