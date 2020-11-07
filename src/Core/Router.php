@@ -11,7 +11,7 @@ class Router
 
     public function __construct()
     {
-        include BASE_PATH . '/config/routes.php';
+        include constant('BASE_PATH') . '/config/routes.php';
 
         $this->routes = getRoutes();
     }
