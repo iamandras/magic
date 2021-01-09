@@ -8,8 +8,15 @@ class ViewHandler
 {
     private array $blocks = [];
 
+    private array $extraFunctions = [];
+
     public function render(string $path, array $parameters): string
     {
+        $this->extraFunctions['getValue'] =
+            'function getValue($entity, $key): string {' .
+            ' return isset($entity) && isset($entity->{$key}) ? $entity->{$key} : "";' .
+            '}';
+
         $cachedFilePath = $this->cache($path);
         ob_start();
         extract($parameters, EXTR_SKIP);
@@ -28,7 +35,13 @@ class ViewHandler
         $cachedFilePath = $cachePath . str_replace(array('/', '.html'), array('_', ''), $filePath . '.php');
         $code = self::includeFiles($filePath);
         $code = self::compileCode($code);
-        file_put_contents($cachedFilePath, '<?php class_exists(\'' . __CLASS__ . '\') or exit; ?>' . PHP_EOL . $code);
+
+        $header = '<?php class_exists(\'' . __CLASS__ . '\') or exit; ?>' . PHP_EOL;
+        foreach ($this->extraFunctions as $key => $functionText) {
+            $header .= '<?php ' . $functionText . ' ?>';
+        }
+
+        file_put_contents($cachedFilePath,  $header . $code);
 
         return $cachedFilePath;
     }
@@ -49,7 +62,7 @@ class ViewHandler
 
     private function compileCode(string $code): string {
         $code = $this->compileBlock($code);
-        $code = $this->compileYield($code);
+        $code = $this->compileIncludeBlock($code);
         $code = $this->compileEscapedEchos($code);
         $code = $this->compileEchos($code);
 
@@ -90,7 +103,7 @@ class ViewHandler
         return $code;
     }
 
-    private function compileYield(string $code): string
+    private function compileIncludeBlock(string $code): string
     {
         foreach($this->blocks as $block => $value) {
             $code = preg_replace('/{% ?addBlock ?' . $block . ' ?%}/', $value, $code);
