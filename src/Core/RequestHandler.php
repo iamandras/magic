@@ -63,8 +63,23 @@ class RequestHandler
                 call_user_func_array([$indexController, 'setRoutePattern'], [$result['routePattern']]);
             }
 
+            $routeParameters = $result['parameters'];
+
+            $reflectionMethod = new \ReflectionMethod(get_class($indexController), 'index');
+            $methodParams = $reflectionMethod->getParameters();
+            $index = 0;
+            foreach ($methodParams as $methodParam) {
+                if ($methodParam->getType() instanceof \ReflectionNamedType) {
+                    $parameterType = $methodParam->getType()->getName();
+                    if ($parameterType === 'int' && $index < count($routeParameters) - 1) {
+                        $routeParameters[$index] = intval($routeParameters[$index]);
+                    }
+                }
+                $index++;
+            }
+
             /** @var MagicResponse $response */
-            $response = call_user_func_array([$indexController, 'index'], $result['parameters']);
+            $response = call_user_func_array([$indexController, 'index'], $routeParameters);
             $this->processResult($response);
         } catch (ApiException $apiException) {
             $response = new MagicResponse($apiException->generateJson(), $apiException->getStatusCode());

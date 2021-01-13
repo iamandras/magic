@@ -24,6 +24,15 @@ class BaseController
         return filter_var($_POST[$paramName], FILTER_SANITIZE_STRING);
     }
 
+    protected function getNumberPostParam(string $paramName, $defaultValue = null): ?int
+    {
+        if (!$this->hasPostParam($paramName)) {
+            return $defaultValue;
+        }
+
+        return intval($_POST[$paramName]);
+    }
+
     protected function returnHtml(string $html): MagicResponse
     {
         header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
@@ -63,7 +72,7 @@ class BaseController
     {
         $errors = [];
         foreach ($fields as $field) {
-            if ($this->getPostParam($field, '') === '') {
+            if (empty($this->getPostParam($field, null))) {
                 $errors[$field] = 'required';
             }
         }
