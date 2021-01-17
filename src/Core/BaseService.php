@@ -9,11 +9,11 @@ use MagicFramework\Core\Database\PDOLayer;
 
 class BaseService
 {
-    protected PDOLayer $dbLayer;
+    protected PDOLayer $pdoLayer;
 
-    public function __construct(PDOLayer $dbLayer)
+    public function __construct(PDOLayer $pdoLayer)
     {
-        $this->dbLayer = $dbLayer;
+        $this->pdoLayer = $pdoLayer;
     }
 
     /**
@@ -21,7 +21,7 @@ class BaseService
      */
     public function handleException(Exception $e): void
     {
-        $this->dbLayer->rollback();
+        $this->pdoLayer->rollback();
         $apiException = new ApiException(ApiException::INTERNAL_ERROR);
         $apiException->setException($e);
         throw $apiException;
@@ -29,11 +29,11 @@ class BaseService
 
     public function beginTransaction(): void
     {
-        $this->dbLayer->beginTransaction();
+        $this->pdoLayer->beginTransaction();
     }
 
     public function commit(): void
     {
-        $this->dbLayer->commit();
+        $this->pdoLayer->commit();
     }
 }
