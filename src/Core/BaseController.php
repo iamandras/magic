@@ -72,7 +72,7 @@ class BaseController
     {
         $errors = [];
         foreach ($fields as $field) {
-            if (empty($this->getPostParam($field, null))) {
+            if ($this->getPostParam($field, '') === '') {
                 $errors[$field] = 'required';
             }
         }

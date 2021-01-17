@@ -8,15 +8,8 @@ class ViewHandler
 {
     private array $blocks = [];
 
-    private array $extraFunctions = [];
-
     public function render(string $path, array $parameters): string
     {
-        $this->extraFunctions['getValue'] =
-            'function getValue($entity, $key): string {' .
-            ' return isset($entity) && isset($entity->{$key}) ? $entity->{$key} : "";' .
-            '}';
-
         $cachedFilePath = $this->cache($path);
         ob_start();
         extract($parameters, EXTR_SKIP);
@@ -37,10 +30,9 @@ class ViewHandler
         $code = self::compileCode($code);
 
         $header = '<?php class_exists(\'' . __CLASS__ . '\') or exit; ?>' . PHP_EOL;
-        foreach ($this->extraFunctions as $key => $functionText) {
-            $header .= '<?php ' . $functionText . ' ?>';
-        }
 
+        $viewFunctions = file_get_contents(__DIR__ . '/ViewFunctions.php');
+        $header .= $viewFunctions;
         file_put_contents($cachedFilePath,  $header . $code);
 
         return $cachedFilePath;
