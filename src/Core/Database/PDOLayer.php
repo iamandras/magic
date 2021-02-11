@@ -41,7 +41,7 @@ class PDOLayer
         foreach ($entityProperties as $entityProperty) {
             $recordValue = null;
             $propertyName = $entityProperty->name;
-            if (isset($record[$propertyName])) {
+            if (!empty($record[$propertyName])) {
                 $recordValue = $record[$propertyName];
             } else {
                 if (!$entityProperty->nullable) {
@@ -51,7 +51,7 @@ class PDOLayer
 
             switch ($entityProperty->type) {
                 case EntityProperty::TYPE_STRING:
-                    $entity->{$propertyName} = (string)$recordValue;
+                    $entity->{$propertyName} = $recordValue === null ? null : (string)$recordValue;
                     break;
                 case EntityProperty::TYPE_INT:
                     $entity->{$propertyName} = (int)$recordValue;
