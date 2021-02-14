@@ -3,7 +3,7 @@
   "type": "project",
   "license": "MIT",
   "description": "magic framework",
-  "version": "1.7.6",
+  "version": "1.7.7",
   "require": {
     "php": "^7.4.0",
     "ext-curl": "*",

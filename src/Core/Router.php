@@ -24,7 +24,7 @@ class Router
         foreach ($this->routes as $route) {
             $routeUrlPattern = $route[0];
             $routeUrlPattern = str_replace('/', '\/', $routeUrlPattern);
-            $routeUrlPattern = preg_replace('/\{[a-zA-Z]+\}/', '([a-zA-Z0-9_]+)', $routeUrlPattern);
+            $routeUrlPattern = preg_replace('/\{[a-zA-Z]+\}/', '([a-zA-Z0-9_\.]+)', $routeUrlPattern);
 
             $routeMethod = $route[1];
             $output = [];
