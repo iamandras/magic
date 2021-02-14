@@ -23,7 +23,8 @@ class PDOLayer
         $this->connection->exec(
             "SET character_set_results = 'utf8', " .
             "character_set_client = 'utf8', character_set_connection = 'utf8', " .
-            "character_set_database = 'utf8', character_set_server = 'utf8', autocommit=0"
+            "character_set_database = 'utf8', character_set_server = 'utf8', autocommit=0, " .
+            "SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED"
         );
 
         $this->connection->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
