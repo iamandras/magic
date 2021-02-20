@@ -71,6 +71,15 @@ class PDOLayer
         return $entity;
     }
 
+    public function addOrderBy(string $column, string $direction, array $allowedColumns): string
+    {
+        if (!in_array($column, $allowedColumns)) {
+            return '';
+        }
+
+        return ' ORDER BY ' . $column . ' ' . $direction;
+    }
+
     public function getRecords(string $sql, string $entityClass, array $parameters): array
     {
         $tempEntity = new $entityClass;
