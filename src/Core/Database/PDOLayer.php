@@ -42,7 +42,7 @@ class PDOLayer
         foreach ($entityProperties as $entityProperty) {
             $recordValue = null;
             $propertyName = $entityProperty->name;
-            if (!empty($record[$propertyName])) {
+            if (isset($record[$propertyName])) {
                 $recordValue = $record[$propertyName];
             } else {
                 if (!$entityProperty->nullable) {
@@ -256,13 +256,20 @@ class PDOLayer
         $this->connection->rollback();
     }
 
-    public function select($sql, $bindValues = array(), $fetchMode = PDO::FETCH_OBJ) {
+    public function select(string $sql, $bindValues = array(), $fetchMode = PDO::FETCH_OBJ) {
         $stmt = $this->connection->prepare($sql);
         foreach ($bindValues as $key => $value) {
             $stmt->bindValue("$key", $value);
         }
 
         $stmt->execute();
+
         return $stmt->fetchAll($fetchMode);
+    }
+
+    public function executeSql(string $sql, array $parameters = []): void
+    {
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute($parameters);
     }
 }

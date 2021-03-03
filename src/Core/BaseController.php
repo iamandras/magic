@@ -33,6 +33,13 @@ class BaseController
         return intval($_POST[$paramName]);
     }
 
+    protected function getNumberQueryParam(string $paramName, $defaultValue = 0): ?int
+    {
+        $queryParam = $this->getQueryParam($paramName, $defaultValue);
+
+        return intval($queryParam);
+    }
+
     protected function returnHtml(string $html): MagicResponse
     {
         header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
