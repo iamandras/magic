@@ -104,6 +104,6 @@ class BaseEntity
             return null;
         }
 
-        return $dateTime->format(DateTime::ATOM);
+        return $dateTime->format('Y-m-d\TH:i:sP');
     }
 }

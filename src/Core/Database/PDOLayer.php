@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MagicFramework\Core\Database;
 
 use DateTime;
+use DateTimeZone;
 use Exception;
 use PDO;
 
@@ -59,7 +60,7 @@ class PDOLayer
                     break;
                 case EntityProperty::TYPE_DATETIME:
                     if ($recordValue !== null) {
-                        $entity->{$propertyName} = new DateTime($recordValue);
+                        $entity->{$propertyName} = new DateTime($recordValue, new DateTimeZone('UTC'));
                     }
                     break;
                 case EntityProperty::TYPE_BOOLEAN:
