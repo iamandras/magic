@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MagicFramework\Core;
 
+use ReflectionClass;
+
 /**
  * Class Container
  */
@@ -57,7 +59,7 @@ class Container
      */
     public function resolve($concrete, $parameters)
     {
-        $reflector = new \ReflectionClass($concrete);
+        $reflector = new ReflectionClass($concrete);
         // check if class is instantiable
         if (!$reflector->isInstantiable()) {
             throw new \Exception("Class {$concrete} is not instantiable");
@@ -91,7 +93,9 @@ class Container
         $dependencies = [];
         foreach ($parameters as $parameter) {
             // get the type hinted class
-            $dependency = $parameter->getClass();
+            //$dependency = $parameter->getClass();
+            $dependency = $parameter->getType() && !$parameter->getType()->isBuiltin() ?
+               new ReflectionClass($parameter->getType()->getName()) : null;
             if ($dependency === null) {
                 // check if default value for a parameter is available
                 if ($parameter->isDefaultValueAvailable()) {
