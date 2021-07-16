@@ -273,4 +273,16 @@ class PDOLayer
         $stmt = $this->connection->prepare($sql);
         $stmt->execute($parameters);
     }
+
+    public function count(string $sql, $bindValues = array()): int
+    {
+        $stmt = $this->connection->prepare($sql);
+        foreach ($bindValues as $key => $value) {
+            $stmt->bindValue("$key", $value);
+        }
+
+        $stmt->execute();
+
+        return $stmt->fetchColumn();
+    }
 }
