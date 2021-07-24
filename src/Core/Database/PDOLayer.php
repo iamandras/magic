@@ -93,7 +93,7 @@ class PDOLayer
 
         $limitSql = '';
         if ($limit !== null) {
-            $limitSql = ' LIMIT ' . $limitSql;
+            $limitSql = ' LIMIT ' . $limit;
             if ($offset !== null) {
                 $limitSql .= ' OFFSET ' . $offset;
             }
