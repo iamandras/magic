@@ -81,12 +81,25 @@ class PDOLayer
         return ' ORDER BY ' . $column . ' ' . $direction;
     }
 
-    public function getRecords(string $sql, string $entityClass, array $parameters): array
-    {
+    public function getRecords(
+        string $sql,
+        string $entityClass,
+        array $parameters,
+        int $limit = null,
+        int $offset = null
+    ): array {
         $tempEntity = new $entityClass;
         $entityProperties = $tempEntity->getEntityProperties();
 
-        $stmt = $this->connection->prepare($sql);
+        $limitSql = '';
+        if ($limit !== null) {
+            $limitSql = ' LIMIT ' . $limitSql;
+            if ($offset !== null) {
+                $limitSql .= ' OFFSET ' . $offset;
+            }
+        }
+
+        $stmt = $this->connection->prepare($sql . $limitSql);
         $stmt->execute($parameters);
 
         $list = [];
