@@ -22,9 +22,7 @@ class BaseService
     public function handleException(Exception $e): void
     {
         $this->pdoLayer->rollback();
-        $apiException = new ApiException(ApiException::INTERNAL_ERROR);
-        $apiException->setException($e);
-        throw $apiException;
+        throw $e;
     }
 
     public function beginTransaction(): void

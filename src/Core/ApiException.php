@@ -49,10 +49,6 @@ class ApiException extends Exception
             $statusCode = 403;
         }
 
-        if ($errorCode === self::INTERNAL_ERROR) {
-            $statusCode = 500;
-        }
-
         return $statusCode;
     }
 
