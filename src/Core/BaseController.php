@@ -12,7 +12,7 @@ class BaseController
             return $defaultValue;
         }
 
-        return filter_var($_GET[$paramName], FILTER_SANITIZE_STRING);
+        return htmlspecialchars($_GET[$paramName], ENT_QUOTES);
     }
 
     protected function getPostParam(string $paramName, $defaultValue = null): ?string
@@ -21,7 +21,7 @@ class BaseController
             return $defaultValue;
         }
 
-        return filter_var($_POST[$paramName], FILTER_SANITIZE_STRING);
+        return htmlspecialchars($_POST[$paramName], ENT_QUOTES);
     }
 
     protected function getNumberPostParam(string $paramName, $defaultValue = null): ?int
