@@ -10,11 +10,9 @@ use ReflectionProperty;
 
 class BaseEntity
 {
-    /** @var string */
-    public $id;
+    public string $id;
 
-    /** @var bool */
-    public $fromDatabase = false;
+    public bool $fromDatabase = false;
 
     /**
      * @return string[]
@@ -44,21 +42,44 @@ class BaseEntity
     }
 
     /**
-     * @param string $entityClass
      * @return EntityProperty[]
      */
     public function getEntityProperties(): array
     {
         $reflection = new ReflectionClass(get_class($this));
-
+        $classAttributes = $reflection->getAttributes();
+        $useAttributes = false;
+        if (count($classAttributes) > 0 && $classAttributes[0]->getName() === DbTable::class) {
+            $useAttributes = true;
+        }
         $vars = $reflection->getProperties(ReflectionProperty::IS_PUBLIC);
 
         $entityProperties = [];
-        foreach ($vars as $var) {
-            if (in_array($var->getName(), ['fromDatabase'])) {
-                continue;
+
+        if ($useAttributes) {
+            foreach ($vars as $var) {
+                $attributes = $var->getAttributes();
+                if (count($attributes) === 0) {
+                    continue;
+                }
+                $attr = $attributes[0];
+                if ($attr->getName() !== DbColumn::class) {
+                    continue;
+                }
+                $arguments = $attr->getArguments();
+
+                $entityProperties[] = new EntityProperty($var->getName(), $arguments['columnType'], $arguments['nullable']);
             }
 
+            return $entityProperties;
+        }
+
+        $entityProperties = [];
+        foreach ($vars as $var) {
+            $attributes = $var->getAttributes();
+            if (count($attributes) > 0) {
+                echo $attributes[0]->getName();
+            }
             $entityProperties[] = $this->createProperty($var);
         }
 
