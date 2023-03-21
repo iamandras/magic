@@ -67,8 +67,9 @@ class BaseEntity
                     continue;
                 }
                 $arguments = $attr->getArguments();
+                $nullable = $arguments['nullable'] ?? false;
 
-                $entityProperties[] = new EntityProperty($var->getName(), $arguments['columnType'], $arguments['nullable']);
+                $entityProperties[] = new EntityProperty($var->getName(), $arguments['columnType'], $nullable);
             }
 
             return $entityProperties;
