@@ -6,7 +6,7 @@ namespace MagicFramework\Core;
 
 class BaseController
 {
-    protected function getQueryParam(string $paramName, $defaultValue = null): ?string
+    protected function getQueryParam(string $paramName, mixed $defaultValue = null): ?string
     {
         if (!$this->hasQueryParam($paramName)) {
             return $defaultValue;
@@ -15,7 +15,7 @@ class BaseController
         return htmlspecialchars($_GET[$paramName], ENT_QUOTES);
     }
 
-    protected function getPostParam(string $paramName, $defaultValue = null): ?string
+    protected function getPostParam(string $paramName, mixed $defaultValue = null): ?string
     {
         if (!$this->hasPostParam($paramName)) {
             return $defaultValue;
@@ -24,7 +24,7 @@ class BaseController
         return htmlspecialchars($_POST[$paramName], ENT_QUOTES);
     }
 
-    protected function getNumberPostParam(string $paramName, $defaultValue = null): ?int
+    protected function getNumberPostParam(string $paramName, mixed $defaultValue = null): ?int
     {
         if (!$this->hasPostParam($paramName)) {
             return $defaultValue;
@@ -33,7 +33,7 @@ class BaseController
         return intval($_POST[$paramName]);
     }
 
-    protected function getNumberQueryParam(string $paramName, $defaultValue = 0): ?int
+    protected function getNumberQueryParam(string $paramName, int $defaultValue = 0): ?int
     {
         $queryParam = $this->getQueryParam($paramName, $defaultValue);
 
