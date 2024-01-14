@@ -103,8 +103,8 @@ class RequestHandler
     private function processResult(MagicResponse $response): void
     {
         header("Access-Control-Allow-Origin: *");
-        header('Content-Type: ' . $response->getContentType());
-        http_response_code($response->getHttpCode());
-        echo $response->getContent();
+        header('Content-Type: ' . $response->contentType);
+        http_response_code($response->httpCode);
+        echo $response->content;
     }
 }
