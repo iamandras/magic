@@ -46,16 +46,49 @@ class BaseEntity
     public function getEntityProperties(): array
     {
         $reflection = new ReflectionClass(get_class($this));
-
-        $vars = $reflection->getProperties(ReflectionProperty::IS_PUBLIC);
+        $classAttributes = $reflection->getAttributes();
+        $format = '7.1';
+        foreach ($classAttributes as $classAttribute) {
+            if ($classAttribute->getName() === DbTable::class) {
+                if (array_key_exists('format', $classAttribute->getArguments())) {
+                    $format = $classAttribute->getArguments()['format'];
+                    break;
+                }
+            }
+        }
 
         $entityProperties = [];
-        foreach ($vars as $var) {
-            if (in_array($var->getName(), ['fromDatabase'])) {
-                continue;
-            }
 
-            $entityProperties[] = $this->createProperty($var);
+        if ($format === '7.1') {
+            $vars = $reflection->getProperties(ReflectionProperty::IS_PUBLIC);
+
+            foreach ($vars as $var) {
+                if (in_array($var->getName(), ['fromDatabase'])) {
+                    continue;
+                }
+
+                $entityProperties[] = $this->createProperty($var);
+            }
+        }
+
+        if ($format === '8.2') {
+            $properties = $reflection->getProperties();
+            foreach ($properties as $property) {
+                $propAttributes = $property->getAttributes(DbColumn::class);
+
+                foreach ($propAttributes as $propAttribute) {
+                    $nullable = false;
+                    if (array_key_exists('nullable', $propAttribute->getArguments())) {
+                        $nullable = $propAttribute->getArguments()['nullable'];
+                    }
+
+                    $entityProperties[] = new EntityProperty(
+                        name: $property->getName(),
+                        type: $propAttribute->getArguments()['type'],
+                        nullable: $nullable,
+                    );
+                }
+            }
         }
 
         return $entityProperties;

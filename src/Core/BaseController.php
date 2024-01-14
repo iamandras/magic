@@ -71,6 +71,11 @@ class BaseController
         return $payloadArray;
     }
 
+    protected function getRawPayload(): string
+    {
+        return file_get_contents('php://input');
+    }
+
     /**
      * @param string[] $fields
      * @throws ApiException

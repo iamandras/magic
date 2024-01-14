@@ -9,6 +9,7 @@ class DbTable
 {
     public function __construct(
         public string $name,
+        public string $format,
     ) {
     }
 }
