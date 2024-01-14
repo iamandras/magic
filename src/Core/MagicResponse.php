@@ -6,20 +6,11 @@ namespace MagicFramework\Core;
 
 class MagicResponse
 {
-    /** @var string */
-    private $content;
-
-    /** @var int */
-    private $httpCode;
-
-    /** @var string */
-    private $contentType;
-
-    public function __construct(string $content, int $httpCode = 200, string $contentType = 'application/json')
-    {
-        $this->content = $content;
-        $this->httpCode = $httpCode;
-        $this->contentType = $contentType;
+    public function __construct(
+        private string $content,
+        private int $httpCode = 200,
+        private string $contentType = 'application/json'
+    ) {
     }
 
     public function getContent(): string

@@ -6,9 +6,7 @@ namespace MagicFramework\Core;
 
 use ReflectionClass;
 
-/**
- * Class Container
- */
+
 class Container
 {
     protected $instances = [];

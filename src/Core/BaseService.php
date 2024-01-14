@@ -9,11 +9,8 @@ use MagicFramework\Core\Database\PDOLayer;
 
 class BaseService
 {
-    protected PDOLayer $pdoLayer;
-
-    public function __construct(PDOLayer $pdoLayer)
+    public function __construct(protected PDOLayer $pdoLayer)
     {
-        $this->pdoLayer = $pdoLayer;
     }
 
     /**

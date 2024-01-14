@@ -11,7 +11,6 @@ use ReflectionProperty;
 class BaseEntity
 {
     public string $id;
-
     public bool $fromDatabase = false;
 
     /**
@@ -47,40 +46,15 @@ class BaseEntity
     public function getEntityProperties(): array
     {
         $reflection = new ReflectionClass(get_class($this));
-        $classAttributes = $reflection->getAttributes();
-        $useAttributes = false;
-        if (count($classAttributes) > 0 && $classAttributes[0]->getName() === DbTable::class) {
-            $useAttributes = true;
-        }
+
         $vars = $reflection->getProperties(ReflectionProperty::IS_PUBLIC);
 
         $entityProperties = [];
-
-        if ($useAttributes) {
-            foreach ($vars as $var) {
-                $attributes = $var->getAttributes();
-                if (count($attributes) === 0) {
-                    continue;
-                }
-                $attr = $attributes[0];
-                if ($attr->getName() !== DbColumn::class) {
-                    continue;
-                }
-                $arguments = $attr->getArguments();
-                $nullable = $arguments['nullable'] ?? false;
-
-                $entityProperties[] = new EntityProperty($var->getName(), $arguments['columnType'], $nullable);
-            }
-
-            return $entityProperties;
-        }
-
-        $entityProperties = [];
         foreach ($vars as $var) {
-            $attributes = $var->getAttributes();
-            if (count($attributes) > 0) {
-                echo $attributes[0]->getName();
+            if (in_array($var->getName(), ['fromDatabase'])) {
+                continue;
             }
+
             $entityProperties[] = $this->createProperty($var);
         }
 

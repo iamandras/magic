@@ -6,8 +6,8 @@ namespace MagicFramework\Core;
 
 class Router
 {
-    /** @var array */
-    private $routes;
+    /** @var string[][] */
+    private array $routes;
 
     public function __construct()
     {

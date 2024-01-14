@@ -13,7 +13,7 @@ class DbColumn
     public const TYPE_BOOLEAN = 'bool';
 
     public function __construct(
-        public string $columnType,
+        public string $type,
         public bool $nullable = false,
     ) {
     }

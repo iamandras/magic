@@ -38,7 +38,7 @@ class PDOLayer
     private function setEntityFromDatabase(
         BaseEntity $entity,
         array $entityProperties,
-        array $record
+        array $record,
     ): BaseEntity {
         foreach ($entityProperties as $entityProperty) {
             $recordValue = null;
