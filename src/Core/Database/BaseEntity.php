@@ -73,6 +73,14 @@ class BaseEntity
 
         if ($format === '8.2') {
             $properties = $reflection->getProperties();
+
+            // ID needs to be added
+            $entityProperties[] = new EntityProperty(
+                name: 'id',
+                type: DbColumn::TYPE_STRING,
+                nullable: false,
+            );
+
             foreach ($properties as $property) {
                 $propAttributes = $property->getAttributes(DbColumn::class);
 
